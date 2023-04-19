@@ -40,7 +40,7 @@ To see some shaders at work, load a shader (already exported from ShaderFrog) fr
     shader7 - BlueWhite Line Shader
     shader8 - Sky Shader
     shader9 - Fire Shader
-    shader 10 - Heat Map Shader
+    shader10 - Heat Map Shader
     shader11 - Lava Shader
     shader12 - Space Shader
     shader13 - Water Waves Shader
