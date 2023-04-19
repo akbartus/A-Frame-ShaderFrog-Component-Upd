@@ -2,7 +2,7 @@
 <img alt="Screenshot" src="img/screenshot.jpg" width="600">
 
 ### **Description / Rationale**
-This is a component, which allows to load shaders made in ShaderFrog in A-Frame environment.   
+This is a component, which allows to load shaders made in ShaderFrog in A-Frame environment. This is the updated version of the component created by <a href="https://github.com/msj121/aframeFrogShaders">MSG121</a> and is compatible with A-Frame ver. 1.4.1.   
 
 ### **Instructions**
 To see the component at work add "image-particles" component to any empty entity. The component has the following attributes: 
