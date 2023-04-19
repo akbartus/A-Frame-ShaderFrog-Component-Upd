@@ -1,0 +1,41 @@
+{
+  "id": 5677,
+  "name": "BlackWhite Line Shader",
+  "fragment": "precision highp float;\nprecision highp int;\nuniform float width;\nuniform float resolution;\nuniform float speed;\nuniform float time;\nuniform vec3 color;\nvec4 Scanlines1644270665050_478_main() \n                                {\n                                    vec4 Scanlines1644270665050_478_gl_FragColor = vec4(0.0);\n                                    vec3 outColor = vec3(0.0);\n                                    float m = mod((gl_FragCoord.y + (time * speed)) * resolution, width);\n                                    if (m < 2.0) \n                                    {\n                                        outColor = color;\n                                    }\n else if (m < 2.5) \n                                    {\n                                        outColor = color * 0.5;\n                                    }\n                                     Scanlines1644270665050_478_gl_FragColor = vec4(outColor, 1.0);\n                                    return Scanlines1644270665050_478_gl_FragColor *= 1.0;\n                                }\nvoid main() \n                                {\n                                    gl_FragColor = Scanlines1644270665050_478_main();                                }\n",
+  "vertex": "precision highp float;\nprecision highp int;\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat4 viewMatrix;\nuniform mat3 normalMatrix;\nattribute vec3 position;\nvec4 Scanlines1644270665050_478_main() \n                                {\n                                    vec4 Scanlines1644270665050_478_gl_Position = vec4(0.0);\n                                    Scanlines1644270665050_478_gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n                                    return Scanlines1644270665050_478_gl_Position *= 1.0;\n                                }\nvoid main() \n                                {\n                                    gl_Position = Scanlines1644270665050_478_main();                                }\n",
+  "uniforms": {
+    "time": {
+      "type": "f",
+      "glslType": "float"
+    },
+    "color": {
+      "value": {
+        "r": "1",
+        "g": "1",
+        "b": 1
+      },
+      "type": "c",
+      "glslType": "vec3"
+    },
+    "width": {
+      "value": "3",
+      "type": "f",
+      "glslType": "float"
+    },
+    "resolution": {
+      "value": "0.5",
+      "type": "f",
+      "glslType": "float"
+    },
+    "speed": {
+      "value": "-10",
+      "type": "f",
+      "glslType": "float"
+    }
+  },
+  "url": "http://shaderfrog.com/app/view/5677",
+  "user": {
+    "username": "Akbartus",
+    "url": "http://shaderfrog.com/app/profile/andrewray"
+  }
+}

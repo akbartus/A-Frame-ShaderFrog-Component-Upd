@@ -1,0 +1,48 @@
+{
+  "id": 5688,
+  "name": "Toon shader",
+  "fragment": "precision highp float;\nprecision highp int;\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat4 viewMatrix;\nuniform mat3 normalMatrix;\nuniform vec3 cameraPosition;\nuniform float time;\nuniform vec3 color;\nuniform vec3 edgecolor;\nuniform vec3 lightPosition;\nvarying vec3 vPosition;\nvarying vec3 vNormal;\nvarying vec2 vUv;\nvarying vec2 vUv2;\nvec4 Modified_Toon_Shader1644322595772_867_main() \n                                {\n                                    vec4 Modified_Toon_Shader1644322595772_867_gl_FragColor = vec4(0.0);\n                                    vec3 worldPosition = (modelMatrix * vec4(vPosition, 1.0)).xyz;\n                                    vec3 worldNormal = normalize(vec3(modelMatrix * vec4(vNormal, 0.0)));\n                                    vec3 lightVector = normalize(lightPosition - worldPosition);\n                                    vec3 cameraVector = normalize(cameraPosition - worldPosition);\n                                    float colordiff = 0.6;\n                                    vec3 unlitColor = vec3(color.x - colordiff, color.y - colordiff, color.z - colordiff);\n                                    vec3 specularColor = vec3(color.x + colordiff, color.y + colordiff, color.z + colordiff);\n                                    float brightness = dot(worldNormal, lightVector);\n                                    vec3 reflectance = normalize(2.0 * dot(lightVector, worldNormal) * worldNormal - lightVector);\n                                    if (dot(cameraVector, worldNormal) < 0.3) \n                                    {\n                                        Modified_Toon_Shader1644322595772_867_gl_FragColor = vec4(edgecolor, 1.0);\n                                    }\n else \n                                    {\n                                        if (dot(worldNormal, lightVector) > 0.0) \n                                        {\n                                            Modified_Toon_Shader1644322595772_867_gl_FragColor = vec4(color, 1.0);\n                                            if (length(cameraVector - reflectance) < 0.6) \n                                            {\n                                                if (length(worldNormal - reflectance) > 0.2) \n                                                {\n                                                    Modified_Toon_Shader1644322595772_867_gl_FragColor = vec4(specularColor, 1.0);\n                                                }\n                                             }\n                                         }\n else \n                                        {\n                                            Modified_Toon_Shader1644322595772_867_gl_FragColor = vec4(unlitColor, 1.0);\n                                        }\n                                    }\n                                    return Modified_Toon_Shader1644322595772_867_gl_FragColor *= 1.0;\n                                }\nvoid main() \n                                {\n                                    gl_FragColor = Modified_Toon_Shader1644322595772_867_main();                                }\n",
+  "vertex": "precision highp float;\nprecision highp int;\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat4 viewMatrix;\nuniform mat3 normalMatrix;\nuniform vec3 cameraPosition;\nuniform float time;\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec2 uv;\nattribute vec2 uv2;\nvarying vec3 vPosition;\nvarying vec3 vNormal;\nvarying vec2 vUv;\nvarying vec2 vUv2;\nvec4 Modified_Toon_Shader1644322595772_867_main() \n                                {\n                                    vec4 Modified_Toon_Shader1644322595772_867_gl_Position = vec4(0.0);\n                                    vNormal = normal;\n                                    vUv = uv;\n                                    vUv2 = uv2;\n                                    vPosition = position;\n                                    Modified_Toon_Shader1644322595772_867_gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n                                    return Modified_Toon_Shader1644322595772_867_gl_Position *= 1.0;\n                                }\nvoid main() \n                                {\n                                    gl_Position = Modified_Toon_Shader1644322595772_867_main();                                }\n",
+  "uniforms": {
+    "cameraPosition": {
+      "type": "v3",
+      "glslType": "vec3"
+    },
+    "time": {
+      "type": "f",
+      "glslType": "float"
+    },
+    "color": {
+      "value": {
+        "r": 1,
+        "g": 0,
+        "b": 0.023529411764705882
+      },
+      "type": "c",
+      "glslType": "vec3"
+    },
+    "lightPosition": {
+      "value": {
+        "x": "1.0",
+        "y": "2.5",
+        "z": "2.5"
+      },
+      "type": "v3",
+      "glslType": "vec3"
+    },
+    "edgecolor": {
+      "value": {
+        "r": 0,
+        "g": 0,
+        "b": 0
+      },
+      "type": "c",
+      "glslType": "vec3"
+    }
+  },
+  "url": "http://shaderfrog.com/app/view/5688",
+  "user": {
+    "username": "FBP",
+    "url": "http://shaderfrog.com/app/profile/andrewray"
+  }
+}

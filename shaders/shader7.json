@@ -1,0 +1,70 @@
+{
+  "id": 5428,
+  "name": "BlueWhite Line Shader",
+  "fragment": "#extension GL_OES_standard_derivatives : enable\n\nprecision highp float;\nprecision highp int;\nuniform vec3 Circle_Gradient_Glow_Plane_UVs1632076552950_67_color;\nuniform float start;\nuniform float end;\nuniform float alpha;\nuniform float power;\nuniform float width;\nuniform float resolution;\nuniform float speed;\nuniform float time;\nuniform vec3 Scanlines1632076720475_259_color;\nvarying vec3 fPosition;\nvarying vec3 fNormal;\nvarying vec2 vUv;\nvec4 Circle_Gradient_Glow_Plane_UVs1632076552950_67_main() \n                                {\n                                    vec4 Circle_Gradient_Glow_Plane_UVs1632076552950_67_gl_FragColor = vec4(0.0);\n                                    vec2 uv = vUv - 0.5;\n                                    float rim = pow(smoothstep(start, end, 1.0 - dot(1.0 - length(uv), 1.0)), power);\n                                    Circle_Gradient_Glow_Plane_UVs1632076552950_67_gl_FragColor = vec4(clamp(rim, 0.0, 1.0) * alpha * Circle_Gradient_Glow_Plane_UVs1632076552950_67_color, 1.0);\n                                    return Circle_Gradient_Glow_Plane_UVs1632076552950_67_gl_FragColor *= 1.0;\n                                }\nvec4 Scanlines1632076720475_259_main() \n                                {\n                                    vec4 Scanlines1632076720475_259_gl_FragColor = vec4(0.0);\n                                    vec3 outColor = vec3(0.0);\n                                    float m = mod((gl_FragCoord.y + (time * speed)) * resolution, width);\n                                    if (m < 2.0) \n                                    {\n                                        outColor = Scanlines1632076720475_259_color;\n                                    }\n else if (m < 2.5) \n                                    {\n                                        outColor = Scanlines1632076720475_259_color * 0.5;\n                                    }\n                                     Scanlines1632076720475_259_gl_FragColor = vec4(outColor, 1.0);\n                                    return Scanlines1632076720475_259_gl_FragColor *= 1.0;\n                                }\nvoid main() \n                                {\n                                    gl_FragColor = (Circle_Gradient_Glow_Plane_UVs1632076552950_67_main() + Scanlines1632076720475_259_main());                                }\n",
+  "vertex": "precision highp float;\nprecision highp int;\nuniform mat3 normalMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat4 modelMatrix;\nuniform mat4 viewMatrix;\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec2 uv;\nvarying vec3 fNormal;\nvarying vec3 fPosition;\nvarying vec2 vUv;\nvec4 Circle_Gradient_Glow_Plane_UVs1632076552950_67_main() \n                                {\n                                    vec4 Circle_Gradient_Glow_Plane_UVs1632076552950_67_gl_Position = vec4(0.0);\n                                    vUv = uv;\n                                    Circle_Gradient_Glow_Plane_UVs1632076552950_67_gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n                                    return Circle_Gradient_Glow_Plane_UVs1632076552950_67_gl_Position *= 1.0;\n                                }\nvec4 Scanlines1632076720475_259_main() \n                                {\n                                    vec4 Scanlines1632076720475_259_gl_Position = vec4(0.0);\n                                    Scanlines1632076720475_259_gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n                                    return Scanlines1632076720475_259_gl_Position *= 1.0;\n                                }\nvoid main() \n                                {\n                                    gl_Position = Circle_Gradient_Glow_Plane_UVs1632076552950_67_main() + Scanlines1632076720475_259_main();                                }\n",
+  "uniforms": {
+    "start": {
+      "value": "0",
+      "type": "f",
+      "glslType": "float"
+    },
+    "end": {
+      "value": "1",
+      "type": "f",
+      "glslType": "float"
+    },
+    "alpha": {
+      "value": "1",
+      "type": "f",
+      "glslType": "float"
+    },
+    "power": {
+      "value": "1",
+      "type": "f",
+      "glslType": "float"
+    },
+    "Circle_Gradient_Glow_Plane_UVs1632076552950_67_color": {
+      "value": {
+        "r": 1,
+        "g": 1,
+        "b": 1
+      },
+      "type": "c",
+      "glslType": "vec3"
+    },
+    "time": {
+      "type": "f",
+      "glslType": "float"
+    },
+    "resolution": {
+      "value": "0.5",
+      "type": "f",
+      "glslType": "float"
+    },
+    "speed": {
+      "value": "-10",
+      "type": "f",
+      "glslType": "float"
+    },
+    "Scanlines1632076720475_259_color": {
+      "value": {
+        "r": 0.19607843137254902,
+        "g": 0.8,
+        "b": 0.9058823529411765
+      },
+      "type": "c",
+      "glslType": "vec3"
+    },
+    "width": {
+      "value": "4",
+      "type": "f",
+      "glslType": "float"
+    }
+  },
+  "url": "http://shaderfrog.com/app/view/5428",
+  "user": {
+    "username": "Ghibli",
+    "url": "http://shaderfrog.com/app/profile/andrewray"
+  }
+}

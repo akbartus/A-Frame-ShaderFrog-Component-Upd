@@ -1,0 +1,126 @@
+{
+  "id": 6128,
+  "name": "Patterns shader",
+  "fragment": "#define PI 3.1415926535897932384626433832795\n\nprecision highp float;\nprecision highp int;\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat4 viewMatrix;\nuniform vec3 Fork_of_chromakey1664656142655_188_color;\nuniform sampler2D texture;\nuniform float time;\nuniform vec2 colored_fog_responsive1664656249395_201_resolution;\nuniform float colored_fog_responsive1664656249395_201_speed;\nuniform float Circuit_Grid1664656498505_251_resolution;\nuniform float intensity;\nuniform float Circuit_Grid1664656498505_251_speed;\nuniform vec3 lightColor;\nuniform vec3 baseColor;\nuniform float Enter_The_Matrix1664656592857_271_speed;\nuniform vec2 charSize;\nuniform float charResolution;\nuniform vec3 Enter_The_Matrix1664656592857_271_color;\nuniform vec4 backgroundColor;\nuniform vec2 Enter_The_Matrix1664656592857_271_resolution;\nvarying vec3 Fork_of_chromakey1664656142655_188_vPosition;\nvarying vec2 Fork_of_chromakey1664656142655_188_vUv;\nfloat colored_fog_responsive1664656249395_201_random(vec2 pos) \n                                {\n                                    return fract(sin(dot(pos.xy, vec2(12.9898, 78.233))) * 43758.5453123);\n                                }\nfloat noise(in vec2 st) \n                                {\n                                    vec2 i = floor(st);\n                                    vec2 f = fract(st);\n                                    float a = colored_fog_responsive1664656249395_201_random(i);\n                                    float b = colored_fog_responsive1664656249395_201_random(i + vec2(1.0, 0.0));\n                                    float c = colored_fog_responsive1664656249395_201_random(i + vec2(0.0, 1.0));\n                                    float d = colored_fog_responsive1664656249395_201_random(i + vec2(1.0, 1.0));\n                                    vec2 u = f * f * (3.0 - 2.0 * f);\n                                    return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;\n                                }\nfloat fbm(vec2 pos) \n                                {\n                                    float v = 0.0;\n                                    float a = 0.15;\n                                    vec2 shift = vec2(60.0);\n                                    mat2 rot = mat2(cos(0.3), sin(0.3), -sin(0.6), cos(0.3));\n                                    for (int i = 0;\n i < 16; i++) \n                                    {\n                                        v = sin(v * 1.07) + (a * noise(pos));\n                                        pos = rot * pos * 2.0 + shift;\n                                        a *= 0.45;\n                                    }\n                                    return v;\n                                }\nvec4 getSmokePixelCol(vec4 pColor, vec4 pLightColor) \n                                {\n                                    vec4 col1 = mix(pLightColor, pColor, clamp((pColor.a - pLightColor.a), 0.0, 1.0));\n                                    vec4 col2 = vec4(col1.x, col1.y, col1.z, pColor.a);\n                                    return col2;\n                                }\nvec4 getLight(vec2 pShift, float pScale, vec3 pCol, float pBaseAlpha) \n                                {\n                                    vec2 st = gl_FragCoord.xy / colored_fog_responsive1664656249395_201_resolution;\n                                    float pct = 0.0;\n                                    vec2 shift = st + pShift;\n                                    float scale = pScale;\n                                    vec2 tC = vec2(0.5) - st * scale + shift;\n                                    pct = sqrt(tC.x * tC.x + tC.y * tC.y);\n                                    float colorAlpha = (1.0 - pct) * pBaseAlpha;\n                                    return vec4(pCol.xyz, colorAlpha);\n                                }\nvarying vec3 Electricity1664656414596_239_vPosition;\nvec3 mod289(vec3 x) \n                                {\n                                    return x - floor(x * (1.0 / 289.0)) * 289.0;\n                                }\nvec2 mod289(vec2 x) \n                                {\n                                    return x - floor(x * (1.0 / 289.0)) * 289.0;\n                                }\nvec3 permute(vec3 x) \n                                {\n                                    return mod289(((x * 34.0) + 1.0) * x);\n                                }\nfloat snoise(vec2 v) \n                                {\n                                    const vec4 C = vec4(0.211324865405187, 0.366025403784439, -0.577350269189626, 0.024390243902439);\n                                    vec2 i = floor(v + dot(v, C.yy));\n                                    vec2 x0 = v - i + dot(i, C.xx);\n                                    vec2 i1;\n                                    i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);\n                                    vec4 x12 = x0.xyxy + C.xxzz;\n                                    x12.xy -= i1;\n                                    i = mod289(i);\n                                    vec3 p = permute(permute(i.y + vec3(0.0, i1.y, 1.0)) + i.x + vec3(0.0, i1.x, 1.0));\n                                    vec3 m = max(0.5 - vec3(dot(x0, x0), dot(x12.xy, x12.xy), dot(x12.zw, x12.zw)), 0.0);\n                                    m = m * m;\n                                    m = m * m;\n                                    vec3 x = 2.0 * fract(p * C.www) - 1.0;\n                                    vec3 h = abs(x) - 0.5;\n                                    vec3 ox = floor(x + 0.5);\n                                    vec3 a0 = x - ox;\n                                    m *= 1.79284291400159 - 0.85373472095314 * (a0 * a0 + h * h);\n                                    vec3 g;\n                                    g.x = a0.x * x0.x + h.x * x0.y;\n                                    g.yz = a0.yz * x12.xz + h.yz * x12.yw;\n                                    return 130.0 * dot(m, g);\n                                }\nvarying vec2 Circuit_Grid1664656498505_251_vUv;\nvarying vec3 Circuit_Grid1664656498505_251_vPosition;\nvec2 circuit(vec2 p) \n                                {\n                                    p = fract(p);\n                                    float r = 0.3;\n                                    float v = 0.0, g = 1.0;\n                                    float d;\n                                    const int iter = 7;\n                                    for (int i = 0;\n i < iter; i++) \n                                    {\n                                        d = p.x - r;\n                                        g += pow(clamp(1.0 - abs(d), 0.0, 1.0), 200.0);\n                                        if (d > 0.0) \n                                        {\n                                            p.x = (p.x - r) / (1.8 - r);\n                                        }\n else \n                                        {\n                                            p.x = p.x;\n                                        }\n                                        p = p.yx;\n                                    }\n                                    v /= float(iter);\n                                    return vec2(g, v);\n                                }\nvarying vec2 Enter_The_Matrix1664656592857_271_vUv;\nfloat seed = 2.0;\nfloat Enter_The_Matrix1664656592857_271_random(float x) \n                                {\n                                    return fract(sin(x) * 43758.5453);\n                                }\nfloat Enter_The_Matrix1664656592857_271_random(vec2 st) \n                                {\n                                    return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453);\n                                }\nfloat randomChar(vec2 outer, vec2 inner) \n                                {\n                                    vec2 margin = 1.0 - charSize;\n                                    vec2 borders = step(margin, inner) * step(margin, 1.0 - inner);\n                                    return step(0.5, Enter_The_Matrix1664656592857_271_random(outer * seed + floor(inner * charResolution))) * borders.x * borders.y;\n                                }\nvec4 matrix(vec2 st) \n                                {\n                                    float rows = 50.0;\n                                    vec2 ipos = floor(st * rows) + vec2(1.0, 0.0);\n                                    ipos += vec2(0.0, floor(time * Enter_The_Matrix1664656592857_271_speed * Enter_The_Matrix1664656592857_271_random(ipos.x)));\n                                    vec2 fpos = fract(st * rows);\n                                    vec2 center = 0.5 - fpos;\n                                    float pct = Enter_The_Matrix1664656592857_271_random(ipos);\n                                    float glow = (1.0 - dot(center, center) * 3.0) * 2.0;\n                                    float result = randomChar(ipos, fpos) * pct * glow;\n                                    return vec4(Enter_The_Matrix1664656592857_271_color * result, result);\n                                }\nvec4 Fork_of_chromakey1664656142655_188_main() \n                                {\n                                    vec4 Fork_of_chromakey1664656142655_188_gl_FragColor = vec4(0.0);\n                                    vec3 tColor = texture2D(texture, Fork_of_chromakey1664656142655_188_vUv).rgb;\n                                    float a = (length(tColor - Fork_of_chromakey1664656142655_188_color) - .5) * 7.0;\n                                    Fork_of_chromakey1664656142655_188_gl_FragColor = vec4(tColor, a);\n                                    return Fork_of_chromakey1664656142655_188_gl_FragColor *= 0.3;\n                                }\nvec4 colored_fog_responsive1664656249395_201_main(void) \n                                {\n                                    vec4 colored_fog_responsive1664656249395_201_gl_FragColor = vec4(0.0);\n                                    vec2 p = (gl_FragCoord.xy * 2.0 - colored_fog_responsive1664656249395_201_resolution.xy) / min(colored_fog_responsive1664656249395_201_resolution.x, colored_fog_responsive1664656249395_201_resolution.y);\n                                    float time2 = (colored_fog_responsive1664656249395_201_speed) * time / 2.0;\n                                    vec2 q = vec2(0.0);\n                                    q.x = fbm(p + 0.00 * time2);\n                                    q.y = fbm(p + vec2(1.0));\n                                    vec2 r = vec2(-1.0);\n                                    r.x = fbm(p + 1.0 * q + vec2(1.7, 9.2) + 0.15 * time2);\n                                    r.y = fbm(p + 1.0 * q + vec2(8.3, 2.8) + 0.126 * time2);\n                                    float f = fbm(p + r);\n                                    vec4 color = mix(vec4(0.0, 0.0, 0.0, 1.0), vec4(1.5, 1.5, 1.5, 1.0), clamp(length(r.x), 0.0, 1.0));\n                                    color = (f * f * f + 0.6 * f * f + 0.5 * f) * color;\n                                    vec4 blueLight = getLight(vec2(0.8, 0.0), 3.5, vec3(0.4, 1.0, 1.0), 0.5);\n                                    vec4 yellowLight = getLight(vec2(2.5, 5.0), 7.0, vec3(1.0, 1.0, 0.0), 0.2);\n                                    vec4 fuchsiaLight = getLight(vec2(3.5, -0.5), 4.0, vec3(1.0, 0.0, 1.0), 0.3);\n                                    vec4 colorYellow = getSmokePixelCol(color, yellowLight);\n                                    vec4 colorBlue = getSmokePixelCol(colorYellow, blueLight);\n                                    vec4 finalColor = getSmokePixelCol(colorBlue, fuchsiaLight);\n                                    colored_fog_responsive1664656249395_201_gl_FragColor = vec4(finalColor);\n                                    return colored_fog_responsive1664656249395_201_gl_FragColor *= 1.0;\n                                }\nvec4 Electricity1664656414596_239_main(void) \n                                {\n                                    vec4 Electricity1664656414596_239_gl_FragColor = vec4(0.0);\n                                    vec3 pos = Electricity1664656414596_239_vPosition;\n                                    pos.x *= 0.5;\n                                    float noise = snoise(vec2(pos.x * 4.0, time * 0.8));\n                                    float point = (1.0 - pow(2.0 * abs(pos.x), 2.0)) * (sin(time * 0.8) * 0.1 + 0.12 * noise + pow(snoise(vec2(pos.x * 7.0, time * 2.0)), 4.0) * 0.1);\n                                    float point2 = (1.0 - pow(2.0 * abs(pos.x), 2.0)) * (sin(time * 0.8) * 0.1 + 0.15 * noise + pow(snoise(vec2(pos.x * 5.0, time * 2.0)), 3.0) * 0.12);\n                                    float point3 = (1.0 - pow(2.0 * abs(pos.x), 2.0)) * (sin(time * 0.8) * 0.1 + 0.1 * snoise(vec2(pos.x * 2.0, (time) * 0.5)));\n                                    float color = 1.0 - pow(abs(point - pos.y), 0.2);\n                                    float color2 = 1.0 - pow(abs(point2 - pos.y), 0.2);\n                                    float color3 = 1.0 - pow(abs(point3 - pos.y), 0.2);\n                                    color3 = pow(color3, 2.0);\n                                    color2 = pow(color2, 2.0);\n                                    color = pow(color, 2.0);\n                                    Electricity1664656414596_239_gl_FragColor = vec4(color * 0.2 + color2 * 0.4 + color3 * 0.7, color * 0.7 + color2 * 0.5 + color3 * 0.8, color * 1.0 + color2 * 1.0 + color3 * 1.0, 1.0);\n                                    return Electricity1664656414596_239_gl_FragColor *= 1.0;\n                                }\nvec4 Circuit_Grid1664656498505_251_main() \n                                {\n                                    vec4 Circuit_Grid1664656498505_251_gl_FragColor = vec4(0.0);\n                                    vec2 uv = (Circuit_Grid1664656498505_251_vUv.xy + 0.5) * Circuit_Grid1664656498505_251_resolution;\n                                    vec2 cid2 = floor(uv);\n                                    float cid = (cid2.y + cid2.x);\n                                    vec2 dg = circuit(uv);\n                                    float d = dg.x;\n                                    vec3 col1 = (0.2 - vec3(max(min(d, 2.0) - 1.0, 0.0))) * baseColor;\n                                    vec3 col2 = vec3(max(d - 1.0, 0.0)) * lightColor;\n                                    float f = max(0.4 - mod(uv.y - uv.x + (time * Circuit_Grid1664656498505_251_speed) + (dg.y * 0.2), 2.5), 0.0) * intensity;\n                                    col2 *= f;\n                                    Circuit_Grid1664656498505_251_gl_FragColor = vec4(col1 + col2, 1.0);\n                                    return Circuit_Grid1664656498505_251_gl_FragColor *= 0.1;\n                                }\nvec4 Enter_The_Matrix1664656592857_271_main() \n                                {\n                                    vec4 Enter_The_Matrix1664656592857_271_gl_FragColor = vec4(0.0);\n                                    vec2 st = Enter_The_Matrix1664656592857_271_vUv * Enter_The_Matrix1664656592857_271_resolution;\n                                    Enter_The_Matrix1664656592857_271_gl_FragColor = backgroundColor + matrix(st);\n                                    return Enter_The_Matrix1664656592857_271_gl_FragColor *= 0.1;\n                                }\nvoid main() \n                                {\n                                    gl_FragColor = (Fork_of_chromakey1664656142655_188_main() + Electricity1664656414596_239_main() + Circuit_Grid1664656498505_251_main() + Enter_The_Matrix1664656592857_271_main());                                }\n",
+  "vertex": "precision highp float;\nprecision highp int;\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat4 viewMatrix;\nuniform mat3 normalMatrix;\nuniform vec3 cameraPosition;\nuniform float time;\nattribute vec3 position;\nattribute vec2 uv;\nattribute vec3 normal;\nattribute vec2 uv2;\nvarying vec3 Fork_of_chromakey1664656142655_188_vPosition;\nvarying vec2 Fork_of_chromakey1664656142655_188_vUv;\nvarying vec3 Electricity1664656414596_239_vPosition;\nvarying vec3 vNormal;\nvarying vec2 Electricity1664656414596_239_vUv;\nvarying vec2 vUv2;\nvarying vec2 Circuit_Grid1664656498505_251_vUv;\nvarying vec3 Circuit_Grid1664656498505_251_vPosition;\nvarying vec2 Enter_The_Matrix1664656592857_271_vUv;\nvec4 Fork_of_chromakey1664656142655_188_main() \n                                {\n                                    vec4 Fork_of_chromakey1664656142655_188_gl_Position = vec4(0.0);\n                                    Fork_of_chromakey1664656142655_188_vUv = uv;\n                                    Fork_of_chromakey1664656142655_188_vPosition = position;\n                                    Fork_of_chromakey1664656142655_188_gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n                                    return Fork_of_chromakey1664656142655_188_gl_Position *= 0.3;\n                                }\nvec4 colored_fog_responsive1664656249395_201_main() \n                                {\n                                    vec4 colored_fog_responsive1664656249395_201_gl_Position = vec4(0.0);\n                                    colored_fog_responsive1664656249395_201_gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n                                    return colored_fog_responsive1664656249395_201_gl_Position *= 1.0;\n                                }\nvec4 Electricity1664656414596_239_main() \n                                {\n                                    vec4 Electricity1664656414596_239_gl_Position = vec4(0.0);\n                                    vNormal = normal;\n                                    Electricity1664656414596_239_vUv = uv;\n                                    vUv2 = uv2;\n                                    Electricity1664656414596_239_vPosition = position;\n                                    Electricity1664656414596_239_gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n                                    return Electricity1664656414596_239_gl_Position *= 1.0;\n                                }\nvec4 Circuit_Grid1664656498505_251_main() \n                                {\n                                    vec4 Circuit_Grid1664656498505_251_gl_Position = vec4(0.0);\n                                    Circuit_Grid1664656498505_251_vUv = uv;\n                                    Circuit_Grid1664656498505_251_vPosition = position;\n                                    Circuit_Grid1664656498505_251_gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n                                    return Circuit_Grid1664656498505_251_gl_Position *= 0.1;\n                                }\nvec4 Enter_The_Matrix1664656592857_271_main() \n                                {\n                                    vec4 Enter_The_Matrix1664656592857_271_gl_Position = vec4(0.0);\n                                    Enter_The_Matrix1664656592857_271_vUv = uv;\n                                    Enter_The_Matrix1664656592857_271_gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n                                    return Enter_The_Matrix1664656592857_271_gl_Position *= 0.1;\n                                }\nvoid main() \n                                {\n                                    gl_Position = Fork_of_chromakey1664656142655_188_main() + colored_fog_responsive1664656249395_201_main() + Electricity1664656414596_239_main() + Circuit_Grid1664656498505_251_main() + Enter_The_Matrix1664656592857_271_main();                                }\n",
+  "uniforms": {
+    "texture": {
+      "value": null,
+      "type": "t",
+      "glslType": "sampler2D"
+    },
+    "Fork_of_chromakey1664656142655_188_color": {
+      "value": {
+        "r": 0.21176470588235294,
+        "g": 0.1568627450980392,
+        "b": 0.11764705882352941
+      },
+      "type": "c",
+      "glslType": "vec3"
+    },
+    "time": {
+      "type": "f",
+      "glslType": "float"
+    },
+    "colored_fog_responsive1664656249395_201_resolution": {
+      "value": {
+        "x": "800",
+        "y": "800"
+      },
+      "type": "v2",
+      "glslType": "vec2"
+    },
+    "colored_fog_responsive1664656249395_201_speed": {
+      "value": "2.5",
+      "type": "f",
+      "glslType": "float"
+    },
+    "cameraPosition": {
+      "type": "v3",
+      "glslType": "vec3"
+    },
+    "intensity": {
+      "value": "10",
+      "type": "f",
+      "glslType": "float"
+    },
+    "lightColor": {
+      "value": {
+        "r": 0,
+        "g": 0.9647058823529412,
+        "b": 0.14901960784313725
+      },
+      "type": "c",
+      "glslType": "vec3"
+    },
+    "baseColor": {
+      "value": {
+        "r": 0.7019607843137254,
+        "g": 0.7019607843137254,
+        "b": 0.7019607843137254
+      },
+      "type": "c",
+      "glslType": "vec3"
+    },
+    "Circuit_Grid1664656498505_251_resolution": {
+      "value": "6",
+      "type": "f",
+      "glslType": "float"
+    },
+    "Circuit_Grid1664656498505_251_speed": {
+      "value": "1",
+      "type": "f",
+      "glslType": "float"
+    },
+    "backgroundColor": {
+      "value": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "w": 1
+      },
+      "type": "v4",
+      "glslType": "vec4"
+    },
+    "charResolution": {
+      "value": "7.72425155",
+      "type": "f",
+      "glslType": "float"
+    },
+    "charSize": {
+      "value": {
+        "x": 0.8769230769230769,
+        "y": 0.9384615384615385
+      },
+      "type": "v2",
+      "glslType": "vec2"
+    },
+    "Enter_The_Matrix1664656592857_271_speed": {
+      "value": "18.26450037",
+      "type": "f",
+      "glslType": "float"
+    },
+    "Enter_The_Matrix1664656592857_271_color": {
+      "value": {
+        "r": 0,
+        "g": 0.7019607843137254,
+        "b": 0.1450980392156863
+      },
+      "type": "c",
+      "glslType": "vec3"
+    },
+    "Enter_The_Matrix1664656592857_271_resolution": {
+      "value": {
+        "x": 0.46153846153846156,
+        "y": 0.36923076923076925
+      },
+      "type": "v2",
+      "glslType": "vec2"
+    }
+  },
+  "url": "http://shaderfrog.com/app/view/6128",
+  "user": {
+    "username": "MarkoVasic",
+    "url": "http://shaderfrog.com/app/profile/andrewray"
+  }
+}

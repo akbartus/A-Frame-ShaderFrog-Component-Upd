@@ -1,0 +1,40 @@
+{
+  "id": 5605,
+  "name": "Smoke Shader",
+  "fragment": "precision highp float;\nuniform float time;\nuniform float brightness;\nuniform vec2 resolution;\nuniform float speed;\nuniform sampler2D image;\nvarying vec2 vUv;\nfloat random(vec2 pos) \n                                {\n                                    return fract(sin(dot(pos.xy, vec2(12.9898, 78.233))) * 43758.5453123);\n                                }\nfloat noise(vec2 pos) \n                                {\n                                    vec2 i = floor(pos);\n                                    vec2 f = fract(pos);\n                                    float a = random(i + vec2(0.0, 0.0));\n                                    float b = random(i + vec2(1.0, 0.0));\n                                    float c = random(i + vec2(0.0, 1.0));\n                                    float d = random(i + vec2(1.0, 1.0));\n                                    vec2 u = f * f * (3.0 - 2.0 * f);\n                                    return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;\n                                }\nfloat fbm(vec2 pos) \n                                {\n                                    float v = 0.0;\n                                    float a = 0.5;\n                                    vec2 shift = vec2(70);\n                                    for (int i = 0;\n i < 16; i++) \n                                    {\n                                        v = sin(v * 1.1) + (a * noise(pos * shift * 0.15));\n                                        pos = pos * 2.0 + shift;\n                                        a *= 0.5;\n                                    }\n                                    return v;\n                                }\nvec4 Image_Flow1641550230176_121_main(void) \n                                {\n                                    vec4 Image_Flow1641550230176_121_gl_FragColor = vec4(0.0);\n                                    vec2 p = (vUv * 1232.0 - resolution.xy) / min(resolution.x, resolution.y);\n                                    float time2 = (speed) * time / 1.25;\n                                    vec2 q = vec2(0.0);\n                                    q.x = fbm(p + 0.00 * time2);\n                                    q.y = fbm(p + vec2(1.0));\n                                    vec2 r = vec2(-1.0);\n                                    r.x = fbm(p + 1.0 * q + vec2(1.7, 9.2) + 0.15 * time2);\n                                    r.y = fbm(p + 1.0 * q + vec2(8.3, 2.8) + 0.126 * time2);\n                                    float f = fbm(p + r);\n                                    vec4 color = mix(vec4(0, 0, 0, 1.0), texture2D(image, r) * brightness, clamp(length(r.x), 0.0, 1.0));\n                                    color = (f * f * f + 0.6 * f * f + 0.5 * f) * color;\n                                    Image_Flow1641550230176_121_gl_FragColor = vec4(color);\n                                    return Image_Flow1641550230176_121_gl_FragColor *= 1.0;\n                                }\nvoid main() \n                                {\n                                    gl_FragColor = Image_Flow1641550230176_121_main();                                }\n",
+  "vertex": "precision highp float;\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nattribute vec2 uv;\nattribute vec3 position;\nvarying vec2 vUv;\nvec4 Image_Flow1641550230176_121_main() \n                                {\n                                    vec4 Image_Flow1641550230176_121_gl_Position = vec4(0.0);\n                                    vUv = uv;\n                                    Image_Flow1641550230176_121_gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n                                    return Image_Flow1641550230176_121_gl_Position *= 1.0;\n                                }\nvoid main() \n                                {\n                                    gl_Position = Image_Flow1641550230176_121_main();                                }\n",
+  "uniforms": {
+    "time": {
+      "type": "f",
+      "glslType": "float"
+    },
+    "resolution": {
+      "value": {
+        "x": "1920",
+        "y": "1080"
+      },
+      "type": "v2",
+      "glslType": "vec2"
+    },
+    "speed": {
+      "value": "1",
+      "type": "f",
+      "glslType": "float"
+    },
+    "image": {
+      "value": null,
+      "type": "t",
+      "glslType": "sampler2D"
+    },
+    "brightness": {
+      "value": "1.55185871",
+      "type": "f",
+      "glslType": "float"
+    }
+  },
+  "url": "http://shaderfrog.com/app/view/5605",
+  "user": {
+    "username": "MrBodean",
+    "url": "http://shaderfrog.com/app/profile/andrewray"
+  }
+}
