@@ -5,36 +5,30 @@
 This is a component, which allows to load shaders made in ShaderFrog in A-Frame environment. This is the updated version of the component created by <a href="https://github.com/msj121/aframeFrogShaders">MSG121</a> and is compatible with A-Frame ver. 1.4.1.   
 
 ### **Instructions**
-To see the component at work add "image-particles" component to any empty entity. The component has the following attributes: 
+To see the component at work add "shader-frog" component to an a primitive. The component has the following attributes: 
 
-* src: { type: 'string' } - the url to an image. It can be jpg or png.
-* particleSize: { type: 'number', default: 5 } - the size of individual particle. The smaller it is, the more particleCount is required to cover the whole image. 
-* particleCount: { type: 'number', default: 2000 } - the number of particles which will make up the image. It is set manually in order to cover whole image. 
-* particleColor: { type: 'color', default: '' } - the color of the particles. If blank or white, it will show original colors as taken from the image. Otherwise it will show single colored particles across the whole image.
-* particleOpacity: { type: 'number', default: 1 } - opacity of the particles. Can be from 0 to 1.
-* particleSpeed: { type: 'number', default: 0.5 } - speed of the particle movement in seconds. The higher the faster it moves. If 0 particles remain idle. 
-* particleSizeAttenuation: { type: 'boolean', default: true } - if true particle is square like, if false, particle is dot like.
-* particleMotionDuration: { type: 'number', default: 1 } - duration it takes for the motion of particles, in seconds. The more it is, the more particles will be moving.
-* particleDistance: { type: 'number', default: 200 } - max distance particles can travel from their origin. 
-* particleDelay: { type: 'number', default: 3 } - initial delay in seconds before particle motion (if applied).
+* src: { type: 'string' } - the url to a json file, exported from ShaderFrog.
 
-Example implementation is given below. Image target is in "img" folder:
+Example implementation is given below:
 ```
 <html>
 <head>
-  <script src='https://aframe.io/releases/1.3.0/aframe.min.js'></script>
-  <script src='js/image-particles-component.js'></script>
+  <script src="https://aframe.io/releases/1.4.1/aframe.min.js"></script>
+  <script src="js/aframe-shaderfrog-component.js"></script>
 </head>
 <body>
   <a-scene>
-    <a-entity camera position="0 0 300" wasd-controls look-controls></a-entity>
-    <a-entity
-      image-particles="src: img/logo.png; particleSize: 5; particleCount: 4100; particleSpeed: 0.5; particleMotionDuration: 5"></a-entity>
-    </a-scene>
+    <a-box position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
+    <a-cylinder position="1 0.75 -3" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
+    <a-torus canvas-updater position="0 1 -5" radius="1" shader-frog="src:url(shaders/shader9.json)">
+    </a-torus>
+    <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
+  </a-scene>
 </body>
 </html>
 ```
-
+Please note that not all shaders are supported by this loader. Also, 3d models are not supported.
+To see some shaders at work, load a shader (already exported from ShaderFrog) from shaders folder. If you want to use other shaders, make sure to select "Export" > "Three.js" in ShaderFrog's environment, which will export shader in JSON file format.  
 
 ### **Tech Stack**
 The project is powered by AFrame and Three.js. 
