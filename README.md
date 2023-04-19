@@ -28,7 +28,24 @@ Example implementation is given below:
 </html>
 ```
 Please note that not all shaders are supported by this loader. Also, 3d models are not supported.
-To see some shaders at work, load a shader (already exported from ShaderFrog) from shaders folder. If you want to use other shaders, make sure to select "Export" > "Three.js" in ShaderFrog's environment, which will export shader in JSON file format.  
+To see some shaders at work, load a shader (already exported from ShaderFrog) from shaders folder. Here is the list of shaders: 
+```
+    shader0 - Water Shader
+    shader1 - Patterns Shader
+    shader2 - Blue Glow Shader
+    shader3 - Toon Shader
+    shader4 - BlackWhite Line Shader
+    shader5 - Smoke Shader
+    shader6 - Blue Glow Shader
+    shader7 - BlueWhite Line Shader
+    shader8 - Sky Shader
+    shader9 - Fire Shader
+    shader 10 - Heat Map Shader
+    shader11 - Lava Shader
+    shader12 - Space Shader
+    shader13 - Water Waves Shader
+```
+If you want to use other shaders, make sure to select "Export" > "Three.js" in ShaderFrog's environment, which will export shader in JSON file format.  
 
 ### **Tech Stack**
 The project is powered by AFrame and Three.js. 
