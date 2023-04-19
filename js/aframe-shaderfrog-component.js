@@ -24,7 +24,8 @@ AFRAME.registerSystem('shader-frog', {
 });
 AFRAME.registerComponent('shader-frog',{
   schema:{
-    src:{type:"asset"}
+    src: {type:"asset"},
+    side: {type:"string"} // set to 'double' if need double sided
   },
   init: function(){
     this.originalMaterial = this.el.getObject3D('mesh').material;
@@ -32,6 +33,9 @@ AFRAME.registerComponent('shader-frog',{
   update: function(){
     this.system.frog_runtime.load(this.data.src,function(shaderData){
       var material = this.system.frog_runtime.get(shaderData.name);
+      if (this.data.side == "double") {
+        material.side = THREE.DoubleSide;
+      }
       this.el.getObject3D('mesh').material = material;
     }.bind(this));
   },
