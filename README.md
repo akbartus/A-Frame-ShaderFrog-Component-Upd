@@ -51,4 +51,4 @@ If you want to use other shaders, make sure to select "Export" > "Three.js" in S
 The project is powered by AFrame and Three.js. 
 
 ### **Demo**
-See demo of the component here: [Demo](https://img-particles.glitch.me/)
+See demo of the component here: [Demo](https://shaderfrog-component.glitch.me/)
