@@ -8,6 +8,7 @@ This is a component, which allows to load shaders made in ShaderFrog in A-Frame 
 To see the component at work add "shader-frog" component to an a primitive. The component has the following attributes: 
 
 * src: { type: 'string' } - the url to a json file, exported from ShaderFrog.
+* side: { type: 'string'} - three.js default is single side material, if 'side' set to 'double' then use THREE.DoubleSide
 
 Example implementation is given below:
 ```
@@ -20,9 +21,10 @@ Example implementation is given below:
   <a-scene>
     <a-box position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
     <a-cylinder position="1 0.75 -3" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
-    <a-torus canvas-updater position="0 1 -5" radius="1" shader-frog="src:url(shaders/shader9.json)">
+    <a-torus position="0 1 -5" radius="1" shader-frog="src:url(shaders/shader9.json)">
     </a-torus>
     <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
+    <a-sky rotation="-180 0 90" shader-frog="src:url(shaders/shader8.json); side: double"></a-sky>
   </a-scene>
 </body>
 </html>
@@ -36,7 +38,7 @@ To see some shaders at work, load a shader (already exported from ShaderFrog) fr
     shader3 - Toon Shader
     shader4 - BlackWhite Line Shader
     shader5 - Smoke Shader
-    shader6 - Blue Glow Shader
+    shader6 - Marching Ants Outline
     shader7 - BlueWhite Line Shader
     shader8 - Sky Shader
     shader9 - Fire Shader
